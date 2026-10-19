@@ -1,0 +1,989 @@
+/* Propuesta B2B (variantes A y B): las piezas interactivas de la vista previa del
+   cliente, hechas con los tokens de la web de Hispaniola (index.css). */
+
+@property --fx {
+  syntax: '<percentage>';
+  inherits: true;
+  initial-value: 50%;
+}
+@property --fy {
+  syntax: '<percentage>';
+  inherits: true;
+  initial-value: 50%;
+}
+
+/* ---------- Héroe: entrada ---------- */
+.hero-zoom {
+  animation: hero-zoom 16s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+@keyframes hero-zoom {
+  from {
+    scale: 1.08;
+  }
+}
+.hero-linea {
+  animation: hero-linea 900ms cubic-bezier(0.22, 1, 0.36, 1) both;
+  animation-delay: calc(var(--i, 0) * 130ms + 120ms);
+}
+@keyframes hero-linea {
+  from {
+    opacity: 0;
+    translate: 0 0.5em;
+    filter: blur(6px);
+  }
+}
+.hero-pase {
+  animation: hero-pase 1100ms cubic-bezier(0.22, 1, 0.36, 1) 420ms both;
+}
+@keyframes hero-pase {
+  from {
+    opacity: 0;
+    translate: 0 2.5rem;
+    rotate: 3deg;
+  }
+}
+
+/* ---------- Pase de papel (lib/ticket3d.ts) ----------
+   La caja tiene la proporción del pase (apaisado ≥ 640 px de ventana, vertical en móvil,
+   igual que el 3D). El canvas sobresale para que la sombra y la inclinación no se corten. */
+.ticket-caja {
+  position: relative;
+  container-type: inline-size;
+  aspect-ratio: 1.78 / 1;
+}
+.ticket-3d {
+  position: absolute;
+  left: -22%;
+  top: -32%;
+  width: 144% !important;
+  height: 164% !important;
+  pointer-events: none;
+}
+@media (max-width: 639px) {
+  .ticket-caja {
+    aspect-ratio: 1 / 1.78;
+  }
+  .ticket-3d {
+    left: -14%;
+    top: -9%;
+    width: 128% !important;
+    height: 118% !important;
+  }
+}
+.ticket-plano {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  overflow: hidden;
+  border-radius: 3cqw;
+  color: white;
+  background: radial-gradient(120% 90% at 10% -10%, rgb(14 140 156 / 38%), transparent 60%), var(--color-navy);
+  transition: opacity 300ms ease 100ms;
+}
+.ticket-caja--3d .ticket-plano {
+  opacity: 0;
+  pointer-events: none;
+}
+.ticket-plano-cuerpo {
+  flex: 1;
+  min-width: 0;
+  padding: 4.5cqw 4.7cqw;
+  display: flex;
+  flex-direction: column;
+  gap: 3cqw;
+}
+.ticket-plano-talon {
+  width: 23.8%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.6cqw;
+  text-align: center;
+  background: #e5513b;
+  border-left: 2px dashed rgb(255 255 255 / 70%);
+}
+.ticket-micro {
+  display: block;
+  font-size: 1.45cqw;
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--color-aqua-claro);
+}
+.ticket-plano-talon .ticket-micro {
+  color: white;
+}
+.ticket-micro strong {
+  color: white;
+}
+.ticket-plano-ruta {
+  display: flex;
+  justify-content: space-between;
+  gap: 2cqw;
+}
+.ticket-codigo {
+  display: block;
+  font-size: 7.4cqw;
+  font-weight: 700;
+  line-height: 1;
+}
+.ticket-nota {
+  display: block;
+  font-size: 1.9cqw;
+  font-weight: 600;
+}
+.ticket-talon-grande {
+  font-size: 4.4cqw;
+  font-weight: 700;
+  line-height: 1.05;
+}
+.ticket-plano-filas {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 1.5cqw;
+  border-top: 2px dashed rgb(255 255 255 / 30%);
+  padding-top: 2.5cqw;
+  font-size: 1.95cqw;
+  font-weight: 600;
+}
+@media (max-width: 639px) {
+  .ticket-plano {
+    flex-direction: column;
+  }
+  .ticket-plano-cuerpo {
+    padding: 8cqw;
+    gap: 6cqw;
+  }
+  .ticket-plano-talon {
+    width: auto;
+    height: 23.8%;
+    border-left: 0;
+    border-top: 2px dashed rgb(255 255 255 / 70%);
+  }
+  .ticket-micro {
+    font-size: 2.8cqw;
+  }
+  .ticket-codigo {
+    font-size: 11.5cqw;
+  }
+  .ticket-nota {
+    font-size: 3.4cqw;
+  }
+  .ticket-talon-grande {
+    font-size: 7.6cqw;
+  }
+  .ticket-plano-filas {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    font-size: 4cqw;
+  }
+}
+
+/* ---------- Timón de hitos ---------- */
+.timon {
+  touch-action: pan-y;
+  border-radius: 999px;
+}
+.timon:focus-visible {
+  outline: 3px solid var(--color-aqua);
+  outline-offset: 10px;
+}
+.timon-ondas {
+  position: absolute;
+  inset: -10%;
+  border-radius: 999px;
+  background: radial-gradient(circle, rgb(169 229 238 / 45%), transparent 62%);
+}
+.timon-ondas::before,
+.timon-ondas::after {
+  content: '';
+  position: absolute;
+  inset: 12%;
+  border-radius: 999px;
+  border: 1px solid rgb(14 140 156 / 30%);
+  animation: timon-onda 4.5s ease-out infinite;
+}
+.timon-ondas::after {
+  animation-delay: 2.25s;
+}
+@keyframes timon-onda {
+  from {
+    scale: 0.85;
+    opacity: 0.9;
+  }
+  to {
+    scale: 1.18;
+    opacity: 0;
+  }
+}
+.timon-indicador {
+  position: absolute;
+  top: -1.75rem;
+  left: 50%;
+  z-index: 2;
+  translate: -50% 0;
+  border-left: 0.75rem solid transparent;
+  border-right: 0.75rem solid transparent;
+  border-top: 1.125rem solid var(--color-coral);
+  filter: drop-shadow(0 4px 6px rgb(11 37 69 / 25%));
+}
+.timon-perilla {
+  position: absolute;
+  inset: 0;
+  rotate: var(--a);
+  pointer-events: none;
+}
+.timon-perilla-texto {
+  position: absolute;
+  top: -0.25rem;
+  left: 50%;
+  translate: -50% 0;
+  rotate: var(--contra);
+  transition:
+    rotate 900ms cubic-bezier(0.34, 1.45, 0.5, 1),
+    background-color 300ms,
+    scale 300ms;
+  border-radius: 999px;
+  background: var(--color-navy);
+  color: white;
+  border: 2px solid white;
+  padding: 0.3rem 0.65rem;
+  font-size: 0.75rem;
+  font-weight: 700;
+  white-space: nowrap;
+}
+.timon-perilla-texto--activa {
+  background: var(--color-coral-boton);
+  border-color: transparent;
+  scale: 1.12;
+}
+.cursor-grabbing .timon-perilla-texto {
+  transition: none;
+}
+.timon-cubo {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  display: grid;
+  width: 25%;
+  aspect-ratio: 1;
+  translate: -50% -50%;
+  place-items: center;
+  border-radius: 999px;
+  background: radial-gradient(circle at 35% 30%, #1f5590, var(--color-navy) 70%);
+  box-shadow:
+    inset 0 0 0 3px #d8b35a,
+    inset 0 0 0 6px rgb(11 37 69),
+    0 8px 18px rgb(4 17 33 / 45%);
+  pointer-events: none;
+}
+.hito-entra {
+  animation: hito-entra 650ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+@keyframes hito-entra {
+  from {
+    opacity: 0;
+    translate: 0 1rem;
+  }
+}
+.hito-grande {
+  background: linear-gradient(180deg, var(--color-navy) 35%, var(--color-aqua));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+.boton-redondo {
+  display: grid;
+  width: 2.75rem;
+  height: 2.75rem;
+  place-items: center;
+  border-radius: 999px;
+  border: 1px solid var(--color-linea-fuerte);
+  color: var(--color-navy);
+  transition:
+    background-color 200ms,
+    border-color 200ms;
+}
+.boton-redondo:hover {
+  background: var(--color-aqua-tint);
+  border-color: var(--color-navy);
+}
+
+/* ---------- El catamarán con seis puntos ---------- */
+.diorama {
+  transition:
+    --fx 700ms cubic-bezier(0.22, 1, 0.36, 1),
+    --fy 700ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+/* Foco: atenúa todo el diorama menos la zona elegida. La máscara es la propia
+   imagen, así el velo solo cae sobre el dibujo y no sobre el fondo. */
+.diorama-foco {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: radial-gradient(circle at var(--fx) var(--fy), transparent 0 10%, rgb(255 255 255 / 45%) 24%);
+  -webkit-mask: url('/ilustraciones/diorama-480.webp') center / 100% 100% no-repeat;
+  mask: url('/ilustraciones/diorama-480.webp') center / 100% 100% no-repeat;
+}
+.diorama-pin {
+  position: absolute;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  translate: -1.25rem -50%;
+  border-radius: 999px;
+}
+.diorama-pin-num {
+  position: relative;
+  display: grid;
+  width: 2.5rem;
+  height: 2.5rem;
+  place-items: center;
+  border-radius: 999px;
+  background: #fff;
+  color: var(--color-navy);
+  font-size: 0.8125rem;
+  font-weight: 700;
+  box-shadow:
+    0 0 0 4px rgb(255 255 255 / 45%),
+    0 6px 16px rgb(11 37 69 / 25%);
+  transition:
+    background-color 250ms,
+    color 250ms,
+    scale 350ms cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+.diorama-pin-num::before {
+  content: '';
+  position: absolute;
+  inset: -4px;
+  border-radius: 999px;
+  border: 2px solid #fff;
+  animation: pin-pulso 2.4s ease-out infinite;
+}
+@keyframes pin-pulso {
+  from {
+    scale: 1;
+    opacity: 0.8;
+  }
+  to {
+    scale: 1.7;
+    opacity: 0;
+  }
+}
+.diorama-pin-etiqueta {
+  border-radius: 999px;
+  background: var(--color-navy);
+  padding: 0.3rem 0.65rem;
+  color: #fff;
+  font-size: 0.6875rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  opacity: 0;
+  translate: -0.4rem 0;
+  transition:
+    opacity 250ms,
+    translate 250ms;
+  pointer-events: none;
+}
+.diorama-pin:hover .diorama-pin-num {
+  scale: 1.08;
+}
+.diorama-pin:hover .diorama-pin-etiqueta,
+.diorama-pin:focus-visible .diorama-pin-etiqueta,
+.diorama-pin--activo .diorama-pin-etiqueta {
+  opacity: 1;
+  translate: 0 0;
+}
+.diorama-pin--activo .diorama-pin-num {
+  background: var(--color-coral-boton);
+  color: #fff;
+  scale: 1.15;
+}
+.diorama-pin--activo .diorama-pin-num::before {
+  border-color: var(--color-coral);
+}
+.diorama-pin:focus-visible {
+  outline: none;
+}
+.diorama-pin:focus-visible .diorama-pin-num {
+  box-shadow:
+    0 0 0 3px var(--color-navy),
+    0 0 0 6px #fff;
+}
+@media (max-width: 1023px) {
+  .diorama-pin {
+    translate: -50% -50%;
+  }
+  .diorama-pin-num {
+    width: 1.875rem;
+    height: 1.875rem;
+    font-size: 0.6875rem;
+  }
+  .diorama-pin-etiqueta {
+    display: none;
+  }
+}
+.ventaja-tramo {
+  animation: ventaja-tramo 5500ms linear both;
+}
+@keyframes ventaja-tramo {
+  from {
+    scale: 0 1;
+  }
+}
+.panel-entra {
+  animation: hito-entra 550ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+/* ---------- Portafolio: rejilla 3×2 con detalle al pasar / tocar ---------- */
+.frentes {
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: 80%;
+  gap: 1rem;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scroll-padding-inline: 1.25rem;
+  scrollbar-width: none;
+}
+.frentes::-webkit-scrollbar {
+  display: none;
+}
+@media (min-width: 640px) {
+  .frentes {
+    grid-auto-columns: 46%;
+  }
+}
+@media (min-width: 1024px) {
+  .frentes {
+    grid-auto-flow: row;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 1.25rem;
+    overflow: visible;
+  }
+}
+.frente-tarjeta {
+  position: relative;
+  overflow: hidden;
+  aspect-ratio: 4 / 5;
+  border-radius: var(--radius-card-grande);
+  background: var(--color-navy);
+  scroll-snap-align: start;
+  isolation: isolate;
+}
+@media (min-width: 1024px) {
+  .frente-tarjeta {
+    aspect-ratio: 16 / 11;
+  }
+}
+.frente-tarjeta img {
+  transition: scale 900ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+.frente-velo {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(0deg, rgb(11 37 69 / 88%) 0%, rgb(11 37 69 / 35%) 45%, transparent 70%);
+  transition: background-color 450ms ease;
+}
+.frente-cara {
+  position: absolute;
+  inset: auto 0 0 0;
+  padding: 1.25rem 3.75rem 1.25rem 1.25rem;
+  transition: translate 500ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+.frente-detalle {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: 1.25rem 1.25rem 4rem;
+  background: rgb(11 37 69 / 92%);
+  opacity: 0;
+  translate: 0 1.5rem;
+  pointer-events: none;
+  transition:
+    opacity 400ms ease,
+    translate 500ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+.frente-boton {
+  position: absolute;
+  right: 1rem;
+  bottom: 1rem;
+  z-index: 2;
+  display: grid;
+  width: 2.5rem;
+  height: 2.5rem;
+  place-items: center;
+  border-radius: 999px;
+  background: white;
+  color: var(--color-navy);
+  transition:
+    rotate 450ms cubic-bezier(0.22, 1, 0.36, 1),
+    background-color 300ms,
+    color 300ms;
+}
+.frente-boton:focus-visible {
+  outline: 3px solid var(--color-aqua-claro);
+  outline-offset: 2px;
+}
+/* Abierta: por toque/teclado (clase) o al pasar el ratón en escritorio. */
+.frente-tarjeta--abierta .frente-detalle {
+  opacity: 1;
+  translate: 0 0;
+  pointer-events: auto;
+}
+.frente-tarjeta--abierta .frente-cara {
+  translate: 0 -0.5rem;
+  opacity: 0;
+}
+.frente-tarjeta--abierta .frente-boton {
+  rotate: 45deg;
+  background: var(--color-coral-boton);
+  color: white;
+}
+@media (hover: hover) and (min-width: 1024px) {
+  .frente-tarjeta:hover .frente-detalle {
+    opacity: 1;
+    translate: 0 0;
+    pointer-events: auto;
+  }
+  .frente-tarjeta:hover .frente-cara {
+    opacity: 0;
+  }
+  .frente-tarjeta:hover img {
+    scale: 1.05;
+  }
+  .frente-tarjeta:hover .frente-boton {
+    rotate: 45deg;
+    background: var(--color-coral-boton);
+    color: white;
+  }
+}
+.frente-cara {
+  transition:
+    translate 500ms cubic-bezier(0.22, 1, 0.36, 1),
+    opacity 300ms ease;
+}
+@media (prefers-reduced-motion: reduce) {
+  .frente-tarjeta img,
+  .frente-detalle,
+  .frente-cara,
+  .frente-boton {
+    transition: none;
+  }
+}
+
+/* ---------- Día del huésped: recorrido que avanza con el scroll ---------- */
+/* El blanco se va tiñendo de agua hacia abajo: prepara la entrada al tramo navy. */
+.dia-fondo {
+  background: linear-gradient(180deg, #fff 0%, #fff 55%, var(--color-aqua-tint) 100%);
+}
+.dia-ruta {
+  --nodo: 2.75rem;
+  display: grid;
+  gap: 1.75rem;
+  padding-left: calc(var(--nodo) + 1.5rem);
+}
+.dia-ruta-riel {
+  position: absolute;
+  top: calc(var(--nodo) / 2);
+  bottom: 0;
+  left: calc(var(--nodo) / 2 - 1px);
+  width: 2px;
+  border-radius: 999px;
+  background: var(--color-linea);
+}
+.dia-ruta-lleno {
+  position: absolute;
+  inset: 0 0 auto 0;
+  height: calc(var(--avance, 0) * 100%);
+  border-radius: 999px;
+  background: linear-gradient(180deg, var(--color-aqua), var(--color-coral));
+}
+.dia-ruta-mascara {
+  position: absolute;
+  left: 50%;
+  top: calc(var(--avance, 0) * 100%);
+  width: 4.25rem;
+  max-width: none;
+  translate: -50% -50%;
+  rotate: -10deg;
+  filter: drop-shadow(0 8px 12px rgb(11 37 69 / 22%));
+  z-index: 2;
+}
+.dia-parada {
+  position: relative;
+  opacity: 0.4;
+  transition: opacity 500ms ease;
+}
+.dia-parada--pasada {
+  opacity: 0.75;
+}
+.dia-parada--actual {
+  opacity: 1;
+}
+.dia-parada-nodo {
+  position: absolute;
+  top: -0.6rem;
+  left: calc(-1 * (var(--nodo) + 1.5rem));
+  display: grid;
+  width: var(--nodo);
+  height: var(--nodo);
+  place-items: center;
+  border-radius: 999px;
+  border: 2px solid var(--color-linea-fuerte);
+  background: #fff;
+  color: var(--color-navy-soft);
+  font-size: 0.875rem;
+  font-weight: 700;
+  transition:
+    background-color 400ms,
+    border-color 400ms,
+    color 400ms;
+}
+.dia-parada--pasada .dia-parada-nodo {
+  border-color: var(--color-aqua);
+  color: var(--color-aqua-dark);
+}
+.dia-parada--actual .dia-parada-nodo {
+  border-color: var(--color-coral-boton);
+  background: var(--color-coral-boton);
+  color: #fff;
+}
+@media (max-width: 1023px) {
+  .dia-parada {
+    opacity: 1;
+  }
+}
+@media (max-width: 639px) {
+  .dia-ruta {
+    --nodo: 2.25rem;
+    padding-left: calc(var(--nodo) + 1rem);
+  }
+  .dia-parada-nodo {
+    left: calc(-1 * (var(--nodo) + 1rem));
+  }
+  .dia-ruta-mascara {
+    width: 3.25rem;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .dia-ruta-lleno {
+    height: 100%;
+  }
+  .dia-ruta-mascara {
+    display: none;
+  }
+  .dia-parada {
+    opacity: 1;
+    transition: none;
+  }
+}
+
+/* ---------- Confianza: cuatro compromisos sin cajas ---------- */
+.compromiso {
+  position: relative;
+  padding-top: 1.75rem;
+}
+.compromiso::before,
+.compromiso::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  border-radius: 999px;
+  background: rgb(255 255 255 / 16%);
+}
+.compromiso::after {
+  background: linear-gradient(90deg, var(--color-aqua-claro), var(--color-coral));
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 700ms cubic-bezier(0.65, 0, 0.35, 1);
+  transition-delay: calc(var(--i) * 280ms + 150ms);
+}
+.compromiso-icono {
+  display: grid;
+  width: 3.25rem;
+  height: 3.25rem;
+  place-items: center;
+  border-radius: 999px;
+  border: 1px solid rgb(169 229 238 / 35%);
+  color: var(--color-aqua-claro);
+  transition:
+    background-color 500ms,
+    color 500ms,
+    border-color 500ms;
+  transition-delay: calc(var(--i) * 280ms + 450ms);
+}
+/* Móvil: filas compactas, icono a la izquierda */
+@media (max-width: 639px) {
+  .compromiso {
+    display: grid;
+    grid-template-columns: 3.25rem minmax(0, 1fr);
+    column-gap: 1rem;
+    padding-top: 1.25rem;
+  }
+  .compromiso-icono {
+    grid-row: span 2;
+  }
+  .compromiso h3 {
+    margin-top: 0;
+  }
+}
+.compromisos--vistos .compromiso::after {
+  transform: scaleX(1);
+}
+.compromisos--vistos .compromiso-icono {
+  background: var(--color-aqua-claro);
+  border-color: var(--color-aqua-claro);
+  color: var(--color-navy);
+}
+@media (prefers-reduced-motion: reduce) {
+  .compromiso::after,
+  .compromiso-icono {
+    transition: none;
+  }
+}
+
+/* ---------- Museo: las esculturas en abanico ----------
+   La pista se desplaza de lado, así que recorta en vertical: el relleno de arriba deja
+   sitio al escalonado de las pares y a su elevación al pasar el ratón. Los extremos se
+   funden con una máscara (recorte intencionado), nunca un corte seco del contenedor.
+   Sin borde blanco ni sombra: la tarjeta es solo la foto con sus esquinas. */
+.museo-pista {
+  --borde: 1.25rem;
+  display: flex;
+  gap: 1rem;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scroll-padding-inline: var(--borde);
+  scrollbar-width: none;
+  padding: 1rem var(--borde) 1.5rem;
+  -webkit-mask-image: linear-gradient(90deg, transparent 0, #000 var(--borde), #000 calc(100% - var(--borde) * 2.5), transparent 100%);
+  mask-image: linear-gradient(90deg, transparent 0, #000 var(--borde), #000 calc(100% - var(--borde) * 2.5), transparent 100%);
+}
+.museo-pista::-webkit-scrollbar {
+  display: none;
+}
+/* Hueco final: el relleno derecho de un flex con scroll no siempre cuenta; así la última
+   tarjeta llega a reposar fuera del fundido. */
+.museo-pista::after {
+  content: '';
+  flex: 0 0 calc(var(--borde) * 1.5);
+}
+.museo-carta {
+  position: relative;
+  flex: 0 0 78%;
+  scroll-snap-align: start;
+  overflow: hidden;
+  border-radius: var(--radius-card-grande);
+  outline: 1px solid rgb(255 255 255 / 14%);
+  outline-offset: -1px;
+  aspect-ratio: 4 / 5;
+  transition: translate 600ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+@media (min-width: 640px) {
+  .museo-carta {
+    flex-basis: 46%;
+  }
+}
+@media (min-width: 1024px) {
+  .museo-pista {
+    --borde: 1.5rem;
+    padding-top: 3.5rem;
+    padding-bottom: 1.5rem;
+  }
+  .museo-carta {
+    flex-basis: 40%;
+  }
+  .museo-carta:nth-child(even) {
+    translate: 0 -1.75rem;
+  }
+  .museo-carta:hover {
+    translate: 0 -0.75rem;
+  }
+  .museo-carta:nth-child(even):hover {
+    translate: 0 -2.5rem;
+  }
+}
+
+/* ---------- «How it works»: tres filas grandes, sin recorrido ---------- */
+.alianza-fila {
+  display: grid;
+  grid-template-columns: 4.5rem minmax(0, 1fr);
+  gap: 1.25rem;
+  align-items: start;
+  padding-block: 1.75rem;
+  border-top: 1px solid rgb(255 255 255 / 16%);
+}
+.alianza-fila:last-child {
+  border-bottom: 1px solid rgb(255 255 255 / 16%);
+}
+.alianza-num {
+  font-size: 3.25rem;
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: -0.04em;
+  color: transparent;
+  -webkit-text-stroke: 1.5px var(--color-aqua-claro);
+  transition: color 400ms ease;
+}
+.alianza-fila:hover .alianza-num {
+  color: var(--color-aqua-claro);
+}
+@media (max-width: 639px) {
+  .alianza-fila {
+    grid-template-columns: 3.25rem minmax(0, 1fr);
+    gap: 1rem;
+    padding-block: 1.25rem;
+  }
+  .alianza-num {
+    font-size: 2.5rem;
+  }
+}
+
+/* ---------- Reputación: anillo ---------- */
+.anillo-arco {
+  stroke-dasharray: 100 100;
+  stroke-dashoffset: 100;
+  transition: stroke-dashoffset 1600ms cubic-bezier(0.22, 1, 0.36, 1) 300ms;
+}
+.anillo.visible .anillo-arco {
+  stroke-dashoffset: calc(100 - var(--valor));
+}
+
+/* ---------- Movimiento reducido ---------- */
+@media (prefers-reduced-motion: reduce) {
+  .hero-zoom,
+  .hero-linea,
+  .hero-pase,
+  .hito-entra,
+  .panel-entra,
+  .ventaja-tramo,
+  .timon-ondas::before,
+  .timon-ondas::after,
+  .diorama-pin-num::before {
+    animation: none;
+  }
+  .diorama,
+  .museo-carta,
+  .anillo-arco,
+  .timon-perilla-texto {
+    transition: none !important;
+  }
+}
+
+/* En móvil la barra fija es solo el botón */
+@media (max-width: 639px) {
+  .barra-cta {
+    padding: 0.375rem;
+  }
+}
+
+/* ---------- Tramo bajo el agua (confianza, museo, alianza) ---------- */
+.bajo-agua {
+  --espuma: 7rem;
+  background: linear-gradient(
+    180deg,
+    #0e6676 0%,
+    #0b4a68 calc(var(--espuma) + 8%),
+    #0a2b46 30%,
+    #071c33 55%,
+    #0a2b46 82%,
+    #0d3f5e 100%
+  );
+  padding-block: calc(var(--espuma) - 3rem);
+}
+@media (min-width: 640px) {
+  .bajo-agua {
+    --espuma: 8rem;
+  }
+}
+/* La banda de espuma del pie (footer-espuma-mapa): el color de fuera, recortado con la
+   forma de la ola. Arriba, el agua de la sección anterior; abajo, el blanco que sigue. */
+.espuma {
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: calc(var(--espuma) + 2px);
+  pointer-events: none;
+  z-index: 1;
+  mask-image: url('/fotos/footer-espuma-mapa.webp');
+  mask-size: calc(var(--espuma) * 3.299) 100%;
+  mask-repeat: repeat-x;
+  -webkit-mask-image: url('/fotos/footer-espuma-mapa.webp');
+  -webkit-mask-size: calc(var(--espuma) * 3.299) 100%;
+  -webkit-mask-repeat: repeat-x;
+}
+.espuma--arriba {
+  top: -2px;
+  background: var(--color-aqua-tint);
+}
+.espuma--abajo {
+  bottom: -2px;
+  background: #fff;
+  scale: 1 -1;
+  mask-position: 40% 0;
+  -webkit-mask-position: 40% 0;
+}
+.bajo-agua > section {
+  position: relative;
+  z-index: 2;
+}
+
+/* ---------- Kit: el bodegón flota ---------- */
+.kit-flota {
+  filter: drop-shadow(0 26px 30px rgb(11 37 69 / 18%));
+  animation: kit-flota 7s ease-in-out infinite;
+}
+@keyframes kit-flota {
+  0%,
+  100% {
+    translate: 0 0;
+    rotate: -1deg;
+  }
+  50% {
+    translate: 0 -0.75rem;
+    rotate: 1deg;
+  }
+}
+
+/* ---------- Reputación en blanco ---------- */
+.nota-plataforma {
+  position: relative;
+  padding-top: 1.5rem;
+}
+.nota-plataforma::before {
+  content: '';
+  position: absolute;
+  inset: 0 0 auto 0;
+  height: 2px;
+  background: var(--color-linea);
+}
+.nota-plataforma::after {
+  content: '';
+  position: absolute;
+  inset: 0 0 auto 0;
+  height: 2px;
+  background: var(--color-navy);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 900ms cubic-bezier(0.65, 0, 0.35, 1);
+  transition-delay: calc(var(--i, 0) * 200ms);
+}
+.reputacion--vista .nota-plataforma::after {
+  transform: scaleX(1);
+}
+@media (prefers-reduced-motion: reduce) {
+  .kit-flota {
+    animation: none;
+  }
+  .nota-plataforma::after {
+    transition: none;
+  }
+}

@@ -1,0 +1,622 @@
+/* Tokens copiados de la web de Hispaniola (hispaniola-derick/app/src/styles/tokens.css).
+   Solo los que usa la landing; los valores no se tocan para que las dos se lean
+   como la misma marca. Regla heredada: el aqua va con cuentagotas, nunca como
+   fondo grande; la base es blanco + navy y el color lo ponen las fotos. */
+@import 'tailwindcss';
+@import '@fontsource/poppins/latin-400.css';
+@import '@fontsource/poppins/latin-500.css';
+@import '@fontsource/poppins/latin-600.css';
+@import '@fontsource/poppins/latin-700.css';
+@import './b2b.css';
+
+@theme {
+  --color-papel: #ffffff;
+  --color-papel-hueso: #f7f9fa;
+  --color-fondo-ficha: #eef1f4;
+  --color-navy: #0b2545;
+  --color-navy-sub: #42525f;
+  --color-navy-soft: #5b6b78;
+  --color-sobre-navy-suave: #93a7bb;
+  --color-aqua: #0e8c9c;
+  --color-aqua-dark: #0b6f7c;
+  --color-aqua-tint: #eaf3f4;
+  --color-aqua-claro: #a9e5ee;
+  --color-coral: #ef5b44;
+  --color-coral-dark: #d6432c;
+  /* Fondo de botón con texto blanco: el coral de marca (#ef5b44) da 3,36:1
+     con blanco; este, el más claro de su tono que pasa AA (4,55:1). Hover 5,46:1. */
+  --color-coral-boton: #d5412a;
+  --color-coral-boton-hover: #bf3a24;
+  --color-menta: #e7f5ef;
+  --color-menta-texto: #0c7a5e;
+  --color-linea: #dfe6ea;
+  --color-linea-fuerte: #c3ced4;
+  --color-estrella: #fcd34d;
+  --color-whatsapp: #25d366;
+  --color-oceano-footer: #0a5e6b;
+  /* Paleta de profundidad de /underwater-museum, para la sección del museo */
+  --color-museo-superficie: #2aa9b8;
+  --color-museo-medio: #0d7686;
+  --color-museo-hondo: #0b4a68;
+  --color-museo-abismo: #050f1d;
+
+  --font-display: 'Poppins', ui-sans-serif, system-ui, sans-serif;
+  --font-sans: 'Poppins', ui-sans-serif, system-ui, sans-serif;
+
+  --text-hero: 3.75rem;
+  --text-hero--line-height: 1.12;
+  --text-hero-movil: 2.25rem;
+  --text-hero-movil--line-height: 1.15;
+  --text-lead: 1.0625rem;
+  --text-lead--line-height: 1.6;
+  --text-eyebrow: 0.75rem;
+  --text-eyebrow--line-height: 1;
+
+  --radius-card: 1rem;
+  --radius-btn: 0.625rem;
+  --radius-chip: 999px;
+  --radius-hero: 1.75rem;
+  --radius-card-grande: 1.5rem;
+
+  --shadow-card: 0 4px 16px rgb(11 37 69 / 8%);
+  --shadow-card-flotante: 0 16px 40px rgb(11 37 69 / 12%);
+  --shadow-hero: 0 8px 28px rgb(11 37 69 / 25%);
+  --shadow-cta: 0 10px 30px rgb(239 91 68 / 35%);
+
+  --container-contenido: 87.5rem;
+  --spacing-seccion: 4.75rem;
+  --spacing-seccion-sm: 3.25rem;
+}
+
+/* ---------- Base ---------- */
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 6rem;
+  -webkit-text-size-adjust: 100%;
+}
+body {
+  background: var(--color-papel);
+  color: var(--color-navy);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+h1,
+/* En la capa base para que utilidades como `truncate` o `whitespace-nowrap` ganen. */
+@layer base {
+  h2,
+  h3 {
+    text-wrap: balance;
+  }
+  p {
+    text-wrap: pretty;
+  }
+}
+::selection {
+  background: var(--color-aqua-claro);
+  color: var(--color-navy);
+}
+:focus-visible {
+  outline: 2px solid var(--color-aqua);
+  outline-offset: 3px;
+}
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+}
+
+/* ---------- Vidrio (píldora de la nav, chips sobre foto) ---------- */
+.vidrio {
+  background: rgb(255 255 255 / 12%);
+  border: 1px solid rgb(255 255 255 / 18%);
+  backdrop-filter: blur(20px) saturate(200%);
+  -webkit-backdrop-filter: blur(20px) saturate(200%);
+}
+.vidrio-oscuro {
+  background: rgb(5 15 29 / 42%);
+  border: 1px solid rgb(255 255 255 / 18%);
+  backdrop-filter: blur(16px) saturate(160%);
+  -webkit-backdrop-filter: blur(16px) saturate(160%);
+}
+.vidrio-claro {
+  background: rgb(255 255 255 / 82%);
+  border: 1px solid rgb(255 255 255 / 60%);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+}
+
+/* ---------- Subrayado de ola viva (titular del héroe) ----------
+   Misma técnica que .titulo-ola de la web: la FORMA la pone un mask SVG de una
+   longitud de onda en repeat-x y el loop desplaza exactamente una longitud. */
+.titulo-subrayado {
+  position: relative;
+  display: inline-block;
+}
+.titulo-ola {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -0.45rem;
+  height: 0.5rem;
+  background-color: var(--color-aqua-claro);
+  mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 10'%3E%3Cpath d='M0 5Q6 0 12 5T24 5' fill='none' stroke='%23000' stroke-width='2.4' stroke-linecap='round'/%3E%3C/svg%3E");
+  mask-repeat: repeat-x;
+  mask-size: 1.5rem 100%;
+  -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 10'%3E%3Cpath d='M0 5Q6 0 12 5T24 5' fill='none' stroke='%23000' stroke-width='2.4' stroke-linecap='round'/%3E%3C/svg%3E");
+  -webkit-mask-repeat: repeat-x;
+  -webkit-mask-size: 1.5rem 100%;
+  animation: titulo-ola-fluye 3s linear infinite;
+}
+.titulo-palabra {
+  display: inline-block;
+  animation: titulo-palabra-flota 2.6s ease-in-out infinite;
+  animation-delay: calc(var(--i) * 90ms);
+}
+@keyframes titulo-ola-fluye {
+  to {
+    mask-position: 1.5rem 0;
+    -webkit-mask-position: 1.5rem 0;
+  }
+}
+@keyframes titulo-palabra-flota {
+  0%,
+  100% {
+    translate: 0 0;
+  }
+  50% {
+    translate: 0 -0.25rem;
+  }
+}
+
+/* ---------- CTA «mar»: olas que derivan al pie del botón y el catamarán
+   que zarpa al pasar el ratón (receta de .cta-mar de la web) ---------- */
+.cta-mar {
+  position: relative;
+  isolation: isolate;
+  padding-right: 2rem;
+  transition:
+    padding-right 550ms cubic-bezier(0.34, 1.4, 0.64, 1),
+    background-color 150ms ease-out,
+    translate 200ms ease-out;
+}
+.cta-ola {
+  position: absolute;
+  inset-inline: 0;
+  bottom: 0;
+  height: 0.625rem;
+  z-index: -1;
+  pointer-events: none;
+  mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 10'%3E%3Cpath d='M0 5Q6 1 12 5T24 5V10H0Z'/%3E%3C/svg%3E");
+  mask-repeat: repeat-x;
+  mask-size: 1.5rem 100%;
+  -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 10'%3E%3Cpath d='M0 5Q6 1 12 5T24 5V10H0Z'/%3E%3C/svg%3E");
+  -webkit-mask-repeat: repeat-x;
+  -webkit-mask-size: 1.5rem 100%;
+  animation: cta-ola-deriva 2.8s linear infinite;
+}
+.cta-ola--fondo {
+  height: 1.0625rem;
+  animation-duration: 5.3s;
+  animation-direction: reverse;
+}
+@keyframes cta-ola-deriva {
+  to {
+    mask-position: 1.5rem 0;
+    -webkit-mask-position: 1.5rem 0;
+  }
+}
+.cta-barco-ventana {
+  position: absolute;
+  right: 2rem;
+  bottom: 0;
+  top: -5.5rem;
+  width: 5rem;
+  overflow: hidden;
+  pointer-events: none;
+}
+.cta-barco {
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  height: 5.5rem;
+  width: auto;
+  max-width: none;
+  translate: -50% 100%;
+  transform-origin: bottom center;
+  transition: translate 550ms cubic-bezier(0.34, 1.4, 0.64, 1);
+  animation: cta-barco-balanceo 3.6s ease-in-out infinite alternate;
+}
+@keyframes cta-barco-balanceo {
+  from {
+    rotate: -2deg;
+  }
+  to {
+    rotate: 2deg;
+  }
+}
+@media (hover: hover) {
+  .cta-mar:hover {
+    padding-right: 7rem;
+  }
+  .cta-mar:hover .cta-barco {
+    translate: -50% 0.625rem;
+  }
+}
+
+/* ---------- Museo: de la orilla al fondo ---------- */
+/* Arriba, turquoise de agua poco profunda (la orilla); abajo, casi negro. Los
+   rayos (LightRays, WebGL) pintan encima en modo `screen`. */
+.agua-profunda {
+  background: linear-gradient(
+    180deg,
+    #15838f 0%,
+    #0e6676 13%,
+    var(--color-museo-hondo) 30%,
+    #0a2b46 48%,
+    var(--color-museo-abismo) 68%,
+    #010307 100%
+  );
+}
+/* Resplandor de la superficie: fijo, y es lo que queda cuando no hay rayos
+   (movimiento reducido o sin WebGL). */
+.agua-superficie {
+  position: absolute;
+  inset: 0 0 auto 0;
+  height: 60%;
+  pointer-events: none;
+  background:
+    radial-gradient(35% 30% at 50% -6%, rgb(210 248 252 / 26%), transparent 70%),
+    radial-gradient(80% 50% at 50% -10%, rgb(42 169 184 / 35%), transparent 75%);
+}
+.burbuja {
+  position: absolute;
+  bottom: var(--b, -2rem);
+  left: var(--x);
+  width: var(--s);
+  height: var(--s);
+  border-radius: 999px;
+  border: 1px solid rgb(255 255 255 / 70%);
+  background: radial-gradient(circle at 32% 28%, rgb(255 255 255 / 85%) 0 12%, rgb(255 255 255 / 18%) 34%, rgb(169 229 238 / 6%) 70%);
+  box-shadow: inset 0 0 4px rgb(255 255 255 / 35%);
+  opacity: 0;
+  animation: burbuja-sube var(--d) linear infinite;
+  animation-delay: var(--w);
+  pointer-events: none;
+}
+@keyframes burbuja-sube {
+  0% {
+    transform: translate(0, 0);
+    opacity: 0;
+  }
+  10% {
+    opacity: 0.85;
+  }
+  50% {
+    transform: translate(0.75rem, -45vh);
+  }
+  90% {
+    opacity: 0.5;
+  }
+  100% {
+    transform: translate(-0.5rem, -95vh);
+    opacity: 0;
+  }
+}
+
+/* ---------- Footer «océano» con la banda de espuma de la web ---------- */
+.footer-espuma {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: -2px;
+  height: calc(9rem + 2px);
+  pointer-events: none;
+  background: var(--color-papel-hueso);
+  mask-image: url('/fotos/footer-espuma-mapa.webp');
+  mask-size: calc(9rem * 3.299) 100%;
+  mask-repeat: repeat-x;
+  -webkit-mask-image: url('/fotos/footer-espuma-mapa.webp');
+  -webkit-mask-size: calc(9rem * 3.299) 100%;
+  -webkit-mask-repeat: repeat-x;
+}
+@media (min-width: 640px) {
+  .footer-espuma {
+    height: calc(11rem + 2px);
+    mask-size: calc(11rem * 3.299) 100%;
+    -webkit-mask-size: calc(11rem * 3.299) 100%;
+  }
+}
+
+/* ---------- Comisiones: niveles sobre el fondo, unidos por un riel ---------- */
+.niveles {
+  --etiquetas: 15rem;
+  --nodo: 1.25rem;
+  grid-template-columns: var(--etiquetas) repeat(3, minmax(0, 1fr));
+}
+.niveles > [role='row'] > *,
+.nivel-cabecera {
+  position: relative;
+  z-index: 1;
+}
+.nivel-etiqueta,
+.nivel-celda {
+  border-top: 1px solid var(--color-linea);
+  padding: 1.375rem 1.5rem;
+}
+.nivel-etiqueta {
+  padding-left: 0;
+  font-size: 0.9375rem;
+  color: var(--color-navy-sub);
+  display: flex;
+  align-items: center;
+}
+/* Elite: un velo aqua que nace arriba y se disuelve hacia abajo, sin caja. */
+.niveles-elite {
+  position: absolute;
+  top: -1.5rem;
+  bottom: 0;
+  left: calc(var(--etiquetas) + (100% - var(--etiquetas)) * 2 / 3);
+  right: 0;
+  border-radius: 1.5rem 1.5rem 0 0;
+  background: linear-gradient(180deg, var(--color-aqua-tint) 0%, rgb(234 243 244 / 60%) 55%, rgb(234 243 244 / 0%) 100%);
+}
+/* El riel: del nodo de Partner al de Elite, y se llena al entrar en pantalla. */
+.niveles-riel {
+  position: absolute;
+  top: calc(var(--nodo) / 2 - 1px);
+  left: calc(var(--etiquetas) + 1.5rem + var(--nodo) / 2);
+  width: calc((100% - var(--etiquetas)) * 2 / 3);
+  height: 2px;
+  background: var(--color-linea);
+  z-index: 1;
+}
+.niveles-riel-lleno {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, var(--color-aqua-claro), var(--color-aqua-dark));
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 1.4s cubic-bezier(0.65, 0, 0.35, 1) 0.2s;
+}
+.niveles.visible .niveles-riel-lleno {
+  transform: scaleX(1);
+}
+.nivel-nodo {
+  position: absolute;
+  top: 0;
+  left: 1.5rem;
+  z-index: 2;
+  width: 1.25rem;
+  height: 1.25rem;
+  border-radius: 999px;
+  background: white;
+  border: 2px solid var(--color-linea-fuerte);
+  transition:
+    border-color 400ms ease,
+    background-color 400ms ease,
+    box-shadow 400ms ease;
+  transition-delay: calc(0.2s + var(--i, 0) * 0.65s);
+}
+.niveles.visible .nivel-nodo,
+.niveles-movil .nivel-nodo {
+  border-color: var(--color-aqua);
+}
+.niveles.visible .nivel-nodo--elite,
+.niveles-movil .nivel-nodo--elite {
+  background: var(--color-aqua-dark);
+  border-color: var(--color-aqua-dark);
+  box-shadow: 0 0 0 6px rgb(14 140 156 / 16%);
+}
+/* Móvil: riel vertical a la izquierda de los niveles */
+.niveles-movil {
+  position: relative;
+}
+.niveles-movil::before {
+  content: '';
+  position: absolute;
+  left: calc(0.625rem - 1px);
+  top: 0.75rem;
+  bottom: 2rem;
+  width: 2px;
+  background: linear-gradient(180deg, var(--color-aqua-claro), var(--color-aqua-dark));
+}
+.nivel-nodo--movil {
+  left: 0;
+  top: 0.125rem;
+}
+
+/* ---------- Cómo funciona: pasos unidos por conectores ---------- */
+.paso-nodo {
+  position: absolute;
+  left: 0;
+  top: -0.375rem;
+  z-index: 1;
+  display: grid;
+  place-items: center;
+  width: 3.5rem;
+  height: 3.5rem;
+  border-radius: 999px;
+  background: white;
+  border: 2px solid var(--color-linea-fuerte);
+  color: var(--color-navy-soft);
+  font-size: 1.25rem;
+  font-weight: 600;
+  transition:
+    background-color 450ms ease,
+    border-color 450ms ease,
+    color 450ms ease,
+    box-shadow 450ms ease;
+  transition-delay: calc(var(--i) * 0.55s);
+}
+.pasos.visible .paso-nodo {
+  background: var(--color-aqua-dark);
+  border-color: var(--color-aqua-dark);
+  color: white;
+  box-shadow: 0 0 0 6px rgb(14 140 156 / 14%);
+}
+/* Conector al siguiente paso: carril gris (::before) + relleno aqua (::after). */
+.paso:not(:last-child)::before,
+.paso:not(:last-child)::after {
+  content: '';
+  position: absolute;
+  left: calc(1.75rem - 1px);
+  top: 3.125rem;
+  width: 2px;
+  height: calc(100% - 3.125rem + 2.5rem - 0.375rem);
+  background: var(--color-linea-fuerte);
+}
+.paso:not(:last-child)::after {
+  background: var(--color-aqua-dark);
+  transform: scaleY(0);
+  transform-origin: top;
+  transition: transform 500ms cubic-bezier(0.65, 0, 0.35, 1);
+  transition-delay: calc(var(--i) * 0.55s + 0.2s);
+}
+.pasos.visible .paso:not(:last-child)::after {
+  transform: scaleY(1);
+}
+@media (min-width: 1024px) {
+  .paso-nodo {
+    top: 0;
+  }
+  .paso:not(:last-child)::before,
+  .paso:not(:last-child)::after {
+    left: 3.5rem;
+    top: calc(1.75rem - 1px);
+    width: calc(100% + 2rem - 3.5rem);
+    height: 2px;
+  }
+  .paso:not(:last-child)::after {
+    transform: scaleX(0);
+    transform-origin: left;
+  }
+  .pasos.visible .paso:not(:last-child)::after {
+    transform: scaleX(1);
+  }
+}
+
+/* ---------- Referidos: los 3 pasos del US$75, unidos por una línea ---------- */
+@media (min-width: 640px) {
+  .referido-paso:not(:last-child)::after {
+    content: '';
+    position: absolute;
+    top: 1.375rem;
+    left: 3.25rem;
+    right: 0.5rem;
+    border-top: 2px dashed var(--color-linea-fuerte);
+  }
+}
+@media (max-width: 639px) {
+  .referido-paso:not(:last-child)::after {
+    content: '';
+    position: absolute;
+    left: calc(1.375rem - 1px);
+    top: 3rem;
+    bottom: -1rem;
+    border-left: 2px dashed var(--color-linea-fuerte);
+  }
+}
+
+/* ---------- Revelado al entrar en pantalla ---------- */
+.revela {
+  opacity: 0;
+  translate: 0 1.5rem;
+  transition:
+    opacity 700ms cubic-bezier(0.22, 1, 0.36, 1),
+    translate 700ms cubic-bezier(0.22, 1, 0.36, 1);
+  transition-delay: calc(var(--r, 0) * 90ms);
+}
+.revela.visible {
+  opacity: 1;
+  translate: 0 0;
+}
+/* Sin JS (HTML prerenderizado antes de hidratar) el contenido se ve igual. */
+html:not(.js) .revela {
+  opacity: 1;
+  translate: 0 0;
+}
+
+/* ---------- Banda de premios (como la web: componentes.css .premio-logo) ---------- */
+.premio-logo {
+  height: calc(3rem * var(--premio-escala, 1));
+  width: auto;
+  transition: translate 240ms ease-out;
+}
+.premio-logo--macizo {
+  --premio-escala: 0.88;
+}
+@media (min-width: 640px) {
+  .premio-logo {
+    height: calc(4rem * var(--premio-escala, 1));
+  }
+}
+@media (hover: hover) {
+  .premio-logo:hover {
+    translate: 0 -0.125rem;
+  }
+}
+
+/* ---------- Acordeón (FAQ): altura animada con grid-rows ---------- */
+.faq-panel {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows 450ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+.faq-panel > div {
+  overflow: hidden;
+}
+.faq-respuesta {
+  opacity: 0;
+  translate: 0 -0.5rem;
+  transition:
+    opacity 300ms ease,
+    translate 450ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+.faq-item[data-abierto='true'] .faq-panel {
+  grid-template-rows: 1fr;
+}
+.faq-item[data-abierto='true'] .faq-respuesta {
+  opacity: 1;
+  translate: 0 0;
+  transition-delay: 80ms;
+}
+.faq-icono {
+  transition: rotate 450ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+.faq-item[data-abierto='true'] .faq-icono {
+  rotate: 135deg;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .titulo-ola,
+  .titulo-palabra,
+  .cta-ola,
+  .cta-barco {
+    animation: none;
+  }
+  .premio-logo,
+  .faq-panel,
+  .faq-respuesta,
+  .faq-icono,
+  .nivel-nodo,
+  .niveles-riel-lleno,
+  .paso-nodo,
+  .paso::after {
+    transition: none !important;
+  }
+  .burbuja {
+    display: none;
+  }
+  .revela {
+    opacity: 1;
+    translate: 0 0;
+    transition: none;
+  }
+  .cta-mar:hover {
+    padding-right: 2rem;
+  }
+  .cta-mar:hover .cta-barco {
+    translate: -50% 100%;
+  }
+}

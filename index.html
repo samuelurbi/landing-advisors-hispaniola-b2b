@@ -1,0 +1,22 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- seo:inicio — scripts/prerender.mjs reescribe este bloque en el build
+         (dominio de SITIO, noindex salvo INDEXAR=1). Esto solo sirve en dev. -->
+    <title>Travel Advisor Program · Hispaniola Aquatic Adventures</title>
+    <meta name="robots" content="noindex, nofollow" />
+    <!-- seo:fin -->
+    <meta name="theme-color" content="#0b2545" />
+    <link rel="icon" type="image/svg+xml" href="/marca/isotipo.svg" />
+    <link rel="preload" as="image" href="/fotos/hero-poster.webp" imagesrcset="/fotos/hero-poster-800.webp 800w, /fotos/hero-poster.webp 1600w" imagesizes="100vw" fetchpriority="high" />
+    <script>
+      document.documentElement.classList.add('js')
+    </script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>
