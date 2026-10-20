@@ -3,6 +3,7 @@ import { Plus, X } from 'lucide-react'
 import { FICHAS, PORTAFOLIO, num } from '@/data/b2b'
 import { evento } from '@/lib/analitica'
 import { Boton, Contenedor, Eyebrow, cx } from './ui'
+import { medio } from '@/lib/medios'
 
 // Los seis frentes en una rejilla 3×2 (iteración 2: antes eran seis bloques enormes
 // que esperaban a aparecer con el scroll). Cada tarjeta enseña foto, nombre y bajada; el
@@ -56,8 +57,8 @@ export function Portafolio() {
             return (
               <li key={f.nombre} className={cx('frente-tarjeta', abierto && 'frente-tarjeta--abierta')}>
                 <img
-                  src={`/fotos/${f.foto}-800.webp`}
-                  srcSet={`/fotos/${f.foto}-800.webp 800w, /fotos/${f.foto}.webp 1600w`}
+                  src={medio(`/fotos/${f.foto}-800.webp`)}
+                  srcSet={medio(`/fotos/${f.foto}-800.webp 800w, /fotos/${f.foto}.webp 1600w`)}
                   sizes="(min-width: 1024px) 30vw, 80vw"
                   alt={f.alt}
                   loading="lazy"

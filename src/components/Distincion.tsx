@@ -3,6 +3,7 @@ import { DISTINCION, num } from '@/data/b2b'
 import { evento } from '@/lib/analitica'
 import { useAutoavance, useEnPantalla, useReducido } from '@/lib/movimiento'
 import { Contenedor, Eyebrow, Foto, cx } from './ui'
+import { medio } from '@/lib/medios'
 
 // El catamarán con seis puntos. El diorama (Magnific; el barco es Maite, de la flota) es la escena; los
 // puntos son pestañas: al elegir una, un foco ilumina esa parte del barco y al lado
@@ -66,8 +67,8 @@ export function Distincion() {
           <div className="revela relative">
             <div className="diorama relative" style={{ ['--fx' as string]: `${v.x}%`, ['--fy' as string]: `${v.y}%` }}>
               <img
-                src="/ilustraciones/diorama.webp"
-                srcSet="/ilustraciones/diorama-480.webp 800w, /ilustraciones/diorama.webp 1600w"
+                src={medio('/ilustraciones/diorama.webp')}
+                srcSet={medio('/ilustraciones/diorama-480.webp 800w, /ilustraciones/diorama.webp 1600w')}
                 sizes="(min-width: 1024px) 52rem, 100vw"
                 width={1443}
                 height={1203}

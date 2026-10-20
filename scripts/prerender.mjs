@@ -5,7 +5,7 @@
 //    imágenes absolutas, JSON-LD) y decide la indexación con INDEXAR.
 // 3. Genera robots.txt, sitemap.xml y llms.txt desde los mismos datos (src/seo.ts).
 //
-//   SITIO=https://partners.hispaniolaaquaticadventures.com INDEXAR=1 npm run build
+//   SITIO=https://hispaniolatravelagents.com INDEXAR=1 npm run build
 import { readFileSync, writeFileSync, rmSync, readdirSync } from 'node:fs'
 import { pathToFileURL } from 'node:url'
 import { resolve } from 'node:path'
@@ -14,7 +14,8 @@ const raiz = resolve(import.meta.dirname, '..')
 const dist = resolve(raiz, 'dist')
 // Cada variante va a su propio proyecto de Vercel: landing-advisors-hispaniola-a / -b.
 const VARIANTE = process.env.VITE_VARIANTE === 'a' ? 'a' : 'b'
-const SITIO = (process.env.SITIO || `https://landing-advisors-hispaniola-${VARIANTE}.vercel.app`).replace(/\/+$/, '')
+// Por defecto, el dominio final en el Hostinger del cliente (20/10).
+const SITIO = (process.env.SITIO || 'https://hispaniolatravelagents.com').replace(/\/+$/, '')
 const INDEXAR = process.env.INDEXAR === '1'
 const url = `${SITIO}/`
 const abs = (ruta) => `${SITIO}${ruta}`

@@ -3,6 +3,7 @@ import { REPUTACION, num } from '@/data/b2b'
 import { useReducido, useUnaVez } from '@/lib/movimiento'
 import { Contenedor, Eyebrow, cx } from './ui'
 import { Estrellas } from './Insignia'
+import { medio } from '@/lib/medios'
 
 // Reputación con fecha de lectura (7 oct 2026), en blanco y sin fotos de fondo: tres notas
 // grandes en fila (cuentan hacia arriba y su filete se dibuja al asomar) y el anillo del 96.5 %.
@@ -12,7 +13,7 @@ import { Estrellas } from './Insignia'
 
 function Plataforma({ nombre, className }: { nombre: string; className?: string }) {
   if (nombre === 'TripAdvisor')
-    return <img src="/marca/tripadvisor-logo.svg" alt="Tripadvisor" width={131} height={20} className={cx('h-5 w-auto max-w-none', className)} />
+    return <img src={medio('/marca/tripadvisor-logo.svg')} alt="Tripadvisor" width={131} height={20} className={cx('h-5 w-auto max-w-none', className)} />
   return <span className={className}>{nombre}</span>
 }
 

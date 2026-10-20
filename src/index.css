@@ -3,6 +3,9 @@
    como la misma marca. Regla heredada: el aqua va con cuentagotas, nunca como
    fondo grande; la base es blanco + navy y el color lo ponen las fotos. */
 @import 'tailwindcss';
+/* El kit de GoHighLevel y los scripts no son la web: que Tailwind no saque clases de ahí. */
+@source not '../_deploy';
+@source not '../scripts';
 @import '@fontsource/poppins/latin-400.css';
 @import '@fontsource/poppins/latin-500.css';
 @import '@fontsource/poppins/latin-600.css';
@@ -619,4 +622,12 @@ html:not(.js) .revela {
   .cta-mar:hover .cta-barco {
     translate: -50% 100%;
   }
+}
+
+/* Aviso de cookies (/cookies.js): colores de Hispaniola (botón coral AA como el resto de CTA). */
+.ck {
+  --ck-fondo: rgb(11 37 69 / 0.96);
+  --ck-acento: #d5412a;
+  --ck-sobre-acento: #fff;
+  --ck-borde: rgb(255 255 255 / 0.3);
 }

@@ -1,6 +1,7 @@
 import { ArrowUpRight, Mail } from 'lucide-react'
 import { MARCA, PIE } from '@/data/b2b'
 import { Boton } from './ui'
+import { medio } from '@/lib/medios'
 
 // Footer «océano» de la web: banda de espuma + foto del mar con velo.
 export function Pie() {
@@ -8,8 +9,8 @@ export function Pie() {
     <footer className="relative overflow-hidden bg-oceano-footer px-5 pb-8 pt-[calc(9rem+2.5rem)] text-white sm:pt-[calc(11rem+2rem)]">
       <div className="absolute inset-0" aria-hidden>
         <img
-          src="/fotos/footer-oceano.webp"
-          srcSet="/fotos/footer-oceano-800.webp 800w, /fotos/footer-oceano.webp 1600w"
+          src={medio('/fotos/footer-oceano.webp')}
+          srcSet={medio('/fotos/footer-oceano-800.webp 800w, /fotos/footer-oceano.webp 1600w')}
           sizes="100vw"
           alt=""
           loading="lazy"
@@ -22,7 +23,7 @@ export function Pie() {
       <div className="relative mx-auto max-w-contenido sm:px-5">
         <div className="flex flex-col items-center text-center">
           <img
-            src="/marca/logotipo-blanco.webp"
+            src={medio('/marca/logotipo-blanco.webp')}
             alt="Hispaniola Aquatic Adventures"
             width={900}
             height={271}
@@ -59,7 +60,12 @@ export function Pie() {
           </ul>
         </div>
         <p className="mt-6 text-xs text-white/60">{PIE.aviso}</p>
-        <p className="mt-2 text-xs text-white/60">© 2026 Hispaniola Aquatic Adventures.</p>
+        <p className="mt-2 flex flex-wrap items-center gap-x-5 text-xs text-white/60">
+          <span>© 2026 Hispaniola Aquatic Adventures.</span>
+          <a href="/privacy/" className="inline-flex min-h-[44px] items-center underline-offset-4 hover:text-white hover:underline">Privacy Policy</a>
+          <a href="/terms/" className="inline-flex min-h-[44px] items-center underline-offset-4 hover:text-white hover:underline">Terms of Use</a>
+          <button type="button" data-cookies-abrir className="inline-flex min-h-[44px] items-center underline-offset-4 hover:text-white hover:underline">Cookie settings</button>
+        </p>
       </div>
     </footer>
   )

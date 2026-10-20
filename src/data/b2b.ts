@@ -52,6 +52,9 @@ export const MARCA = {
   lugar: 'Punta Cana, Dominican Republic',
   // Punto 09: el correo que la empresa ya publica, hasta que exista uno propio de socios.
   emailSocios: 'info@hispaniolaaquaticadventures.com',
+  // WhatsApp de la web principal (landing de advisors original): solo como salida si falla el
+  // formulario (Samuel, 20/10). Marketing pidió no usar el de clientes finales: confirmar otro.
+  whatsappSocios: '18293052804',
 }
 
 // Punto 10 / ajuste 1: programa de incentivos (COPY-WEB-COMISIONES.txt, bloques 1, 2 y 6).
@@ -510,13 +513,16 @@ export const SOLICITUD = {
   intereses: ['Caribbean Escape', 'Coral Quest', 'Private Charter', 'Saona Island'],
   barcos: ['Maite', 'Grandpa', 'Santa Maria', 'Forever Teresa', 'Saona catamaran', 'Saona speedboat (private)', 'Saona Speedboat Adventure'],
   referido: 'Referral code',
-  // Punto 15: borrador de Hispaniola, pendiente del abogado. «Privacy Policy» queda como marcador sin enlace:
-  // la página de privacidad publicada todavía no tiene texto.
-  consentimiento: 'I agree that Hispaniola Aquatic Adventures may contact me by email or phone about this partnership inquiry. I can withdraw my consent at any time. See our',
+  // Punto 15 + Marketing 20/10: dice exactamente a qué se consiente y enlaza la política (/privacy/,
+  // con huecos hasta el texto legal). Borrador hasta la aprobación del abogado.
+  consentimiento: 'I agree that Hispaniola Aquatic Adventures may store the details I submit in this form and use them to contact me by email or phone about this partnership inquiry. I can withdraw my consent at any time. Read our',
   politica: 'Privacy Policy',
   consentimientoPendiente: 'Draft pending legal approval; link added once the policy is published',
   // Bloque 7: casilla opcional propuesta en el documento del programa (también la aprueba el abogado).
   novedades: 'I agree to receive program updates by email. I can unsubscribe at any time.',
+  fallo: "We couldn't send your request. Please try again, or reach us directly:",
+  falloWhatsapp: 'Message us on WhatsApp',
+  falloWhatsappTexto: "Hi! I tried to send the partner form on hispaniolatravelagents.com and it didn't go through.",
   cta: 'Start a Partnership Conversation',
   exito: {
     titulo: 'Thank you. We have your inquiry.',

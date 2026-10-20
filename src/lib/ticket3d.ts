@@ -12,6 +12,7 @@
 // se lee por su propia luz (la sombra sobraba en el héroe).
 
 import { Mesh, Plane, Program, Raycast, Renderer, Texture, Transform, Camera, Vec2 } from 'ogl'
+import { medio } from './medios'
 
 export type DatosTicket = {
   titulo: string
@@ -444,6 +445,7 @@ function cargar(src: string) {
   return new Promise<HTMLImageElement | null>((ok) => {
     const i = new Image()
     i.decoding = 'async'
+    i.crossOrigin = 'anonymous' // en GHL el logo viene de otro dominio (mediateca) y va a WebGL
     i.onload = () => ok(i)
     i.onerror = () => ok(null)
     i.src = src
@@ -475,7 +477,7 @@ export async function montarTicket(
     Promise.all([
       document.fonts.load(`600 40px Poppins`).catch(() => {}),
       document.fonts.load(`700 90px Poppins`).catch(() => {}),
-      cargar('/marca/logotipo-blanco.webp').then((i) => (logo = i)),
+      cargar(medio('/marca/logotipo-blanco.webp')).then((i) => (logo = i)),
     ]),
     tope,
   ])

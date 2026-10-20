@@ -3,6 +3,7 @@ import { Camera, Check, FileText, GraduationCap, Plus, Tag, UserPlus } from 'luc
 import { FAQ, KIT, REFERIDOS, num } from '@/data/b2b'
 import { evento } from '@/lib/analitica'
 import { Boton, Contenedor, Eyebrow, T, cx } from './ui'
+import { medio } from '@/lib/medios'
 
 // Solo variante B: referidos (US$75, ajuste 5), kit de ventas y FAQ, con los textos de la entrega
 // de Hispaniola del 15 oct 2026.
@@ -21,8 +22,8 @@ export function Kit() {
         <div className="revela relative">
           <div aria-hidden className="absolute inset-[8%] -z-10 rounded-full bg-[radial-gradient(circle,var(--color-aqua-tint)_0%,transparent_70%)]" />
           <img
-            src="/objetos/objeto-kit-640.webp"
-            srcSet="/objetos/objeto-kit-360.webp 360w, /objetos/objeto-kit-640.webp 640w"
+            src={medio('/objetos/objeto-kit-640.webp')}
+            srcSet={medio('/objetos/objeto-kit-360.webp 360w, /objetos/objeto-kit-640.webp 640w')}
             sizes="(min-width: 1024px) 34rem, 80vw"
             alt="Illustration of the partner sales kit: product sheets and photos"
             loading="lazy"

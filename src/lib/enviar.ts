@@ -1,28 +1,28 @@
 import { leerUtm } from './analitica'
 
-// El destino real (CRM / Odoo / GHL) lo decide Marketing. Mientras tanto, sin
-// VITE_FORM_ENDPOINT la landing simula el envío: la preview muestra el éxito y
-// no se pierde nada porque no se promete nada a nadie fuera de la preview.
-const ENDPOINT = import.meta.env.VITE_FORM_ENDPOINT as string | undefined
+// Envío del formulario de socios. Sin GHL (20/10/2026): POST JSON a /api/enviar.php, que va en el
+// propio zip de Hostinger (public/api/) y guarda en MySQL y avisa por SMTP. Solo cuenta como
+// enviado si el servidor contesta { ok: true }; si no, lanza y la web enseña el error con la
+// salida por WhatsApp. En `npm run dev` no hay PHP: se simula, salvo con VITE_FORM_ENDPOINT.
+const ENDPOINT = (import.meta.env.VITE_FORM_ENDPOINT as string | undefined)?.trim() || (import.meta.env.DEV ? '' : '/api/enviar.php')
 
-export async function enviarFormulario(tipo: 'registro' | 'cotizacion', datos: Record<string, unknown>) {
+export async function enviarFormulario(campos: Record<string, unknown>, extra: { consentimiento: boolean; hp: string; ms: number }) {
   const cuerpo = {
-    tipo,
-    marca: 'hispaniola',
-    origen: typeof window !== 'undefined' ? window.location.href : '',
-    enviado: new Date().toISOString(),
+    campos,
+    consentimiento: { aceptado: extra.consentimiento },
     utm: leerUtm(),
-    ...datos,
+    pagina: window.location.href,
+    referrer: document.referrer,
+    idioma: document.documentElement.lang || 'en',
+    _hp: extra.hp,
+    _ms: extra.ms,
   }
   if (!ENDPOINT) {
     await new Promise((r) => setTimeout(r, 700))
-    console.info('[preview] Formulario no enviado (falta VITE_FORM_ENDPOINT):', cuerpo)
+    console.info('[preview] Formulario no enviado (sin PHP en dev):', cuerpo)
     return
   }
-  const res = await fetch(ENDPOINT, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(cuerpo),
-  })
-  if (!res.ok) throw new Error(`HTTP ${res.status}`)
+  const res = await fetch(ENDPOINT, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(cuerpo) })
+  const j = (await res.json().catch(() => null)) as { ok?: boolean; error?: string } | null
+  if (!res.ok || j?.ok !== true) throw new Error(j?.error ?? `HTTP ${res.status}`)
 }

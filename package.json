@@ -5,7 +5,8 @@
   "type": "module",
   "scripts": {
     "dev": "vite --port 5310",
-    "build": "tsc --noEmit && vite build && vite build --ssr src/entry-server.tsx --outDir dist-ssr && node scripts/prerender.mjs",
+    "build": "tsc --noEmit && vite build && vite build --ssr src/entry-server.tsx --outDir dist-ssr && node scripts/prerender.mjs && node scripts/legales.mjs && node scripts/api.mjs",
+    "zip": "node scripts/zip-hostinger.mjs",
     "preview": "vite preview --port 5311",
     "qa": "node scripts/prohibidas.mjs dist && node scripts/qa-imagenes.mjs http://localhost:5311/ && node scripts/qa-interacciones.mjs http://localhost:5311/ qa-capturas",
     "medios": "bash scripts/medios.sh",
@@ -25,6 +26,7 @@
     "@types/react": "^19.2.17",
     "@types/react-dom": "^19.2.3",
     "@vitejs/plugin-react": "^6.0.3",
+    "esbuild": "^0.28.2",
     "tailwindcss": "^4.3.2",
     "typescript": "~6.0.2",
     "vite": "^8.1.1"

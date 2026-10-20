@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from 'react'
 import { DIA, num } from '@/data/b2b'
 import { evento } from '@/lib/analitica'
 import { Contenedor, Eyebrow, Foto, cx } from './ui'
+import { medio } from '@/lib/medios'
 
 // El día del cliente como un recorrido que avanza con el scroll: a la izquierda (fija en
 // escritorio) la foto de la parada en curso; a la derecha las siete paradas sobre una
@@ -79,8 +80,8 @@ export function Dia() {
                 P.map((x, i) => (
                   <img
                   key={x.foto + i}
-                  src={`/fotos/${x.foto}-800.webp`}
-                  srcSet={`/fotos/${x.foto}-800.webp 800w, /fotos/${x.foto}.webp 1600w`}
+                  src={medio(`/fotos/${x.foto}-800.webp`)}
+                  srcSet={medio(`/fotos/${x.foto}-800.webp 800w, /fotos/${x.foto}.webp 1600w`)}
                   sizes="34vw"
                   alt=""
                   className={cx('absolute inset-0 h-full w-full object-cover transition-[opacity,scale] duration-700 ease-out', i === actual ? 'scale-100 opacity-100' : 'scale-[1.04] opacity-0')}
@@ -98,7 +99,7 @@ export function Dia() {
         <ol ref={lista} className="dia-ruta relative lg:col-span-7 lg:pt-4" style={{ ['--avance' as string]: avance }}>
           <li aria-hidden className="dia-ruta-riel">
             <span className="dia-ruta-lleno" />
-            <img src="/ilustraciones/mascara-480.webp" alt="" width={480} height={553} className="dia-ruta-mascara" />
+            <img src={medio('/ilustraciones/mascara-480.webp')} alt="" width={480} height={553} className="dia-ruta-mascara" />
           </li>
           {P.map((x, i) => (
             <li key={x.corto} data-parada className={cx('dia-parada', i <= actual && 'dia-parada--pasada', i === actual && 'dia-parada--actual')}>

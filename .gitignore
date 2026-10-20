@@ -11,3 +11,4 @@ dist-ssr
 .vercel
 qa-capturas/
 dist-b
+config.php

@@ -4,6 +4,7 @@ import { OPERADOR, num } from '@/data/b2b'
 import { evento } from '@/lib/analitica'
 import { useAutoavance, useEnPantalla, useReducido } from '@/lib/movimiento'
 import { Boton, Contenedor, Eyebrow, Foto, T, cx } from './ui'
+import { medio } from '@/lib/medios'
 
 // El timón de hitos. El timón (render de Codex) gira arrastrándolo con el ratón o
 // el dedo, con las flechas del teclado, con los botones o con los puntos, y encaja
@@ -133,8 +134,8 @@ export function Operador() {
               }}
             >
               <img
-                src="/ilustraciones/timon.webp"
-                srcSet="/ilustraciones/timon-480.webp 480w, /ilustraciones/timon.webp 900w"
+                src={medio('/ilustraciones/timon.webp')}
+                srcSet={medio('/ilustraciones/timon-480.webp 480w, /ilustraciones/timon.webp 900w')}
                 sizes="(min-width: 1024px) 32rem, 80vw"
                 alt=""
                 draggable={false}
@@ -152,7 +153,7 @@ export function Operador() {
               ))}
             </div>
             <div className="timon-cubo" aria-hidden>
-              <img src="/marca/logotipo-blanco.webp" alt="" width={900} height={271} className="w-[78%]" />
+              <img src={medio('/marca/logotipo-blanco.webp')} alt="" width={900} height={271} className="w-[78%]" />
             </div>
           </div>
           <p className="mt-6 text-center text-eyebrow font-semibold uppercase tracking-[0.18em] text-navy-soft">Turn the helm</p>

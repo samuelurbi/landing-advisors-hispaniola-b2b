@@ -1,6 +1,6 @@
 import { useId, useMemo, useRef, useState, type FormEvent, type ReactNode } from 'react'
 import { CheckCircle2, ChevronDown, Loader2 } from 'lucide-react'
-import { SOLICITUD, num } from '@/data/b2b'
+import { MARCA, SOLICITUD, num } from '@/data/b2b'
 import { evento } from '@/lib/analitica'
 import { enviarFormulario } from '@/lib/enviar'
 import type { DatosTicket } from '@/lib/ticket3d'
@@ -56,6 +56,8 @@ export function Solicitud() {
   const [b, setB] = useState<Borrador>({ nombre: '', empresa: '', email: '', pais: '', tipo: '', consentimiento: false })
   const formRef = useRef<HTMLFormElement>(null)
   const empezado = useRef(false)
+  // Antispam: el servidor rechaza envíos hechos a menos de 3 s de ver el formulario.
+  const visto = useRef(Date.now())
   const uid = useId()
   const id = (k: string) => `${uid}-${k}`
 
@@ -115,10 +117,11 @@ export function Solicitud() {
       if (k === 'intereses' || k === 'barcos') datos[k] = d.getAll(k)
       else datos[k] = v
     })
-    datos.consentimiento = true
+    delete datos.consentimiento
     datos.novedades = d.get('novedades') === 'on'
     try {
-      await enviarFormulario('registro', datos)
+      await enviarFormulario(datos, { consentimiento: true, hp: '', ms: Date.now() - visto.current })
+      // Solo cuando el servidor confirma (guardado y aviso enviados).
       evento('form_submit_success', { country: datos.pais, business_type: datos.tipo, interests: (datos.intereses as string[]).join(',') })
       setEstado('hecho')
     } catch {
@@ -164,6 +167,8 @@ export function Solicitud() {
           ) : (
             <form
               ref={formRef}
+              action="/api/enviar.php"
+              method="post"
               noValidate
               onSubmit={enviar}
               onChange={cambio}
@@ -267,7 +272,12 @@ export function Solicitud() {
                 <label className="flex cursor-pointer items-start gap-3 text-sm leading-relaxed text-navy-sub">
                   <input type="checkbox" name="consentimiento" className="mt-1 size-4 shrink-0 accent-aqua-dark" {...err('consentimiento')} />
                   <span>
-                    {SOLICITUD.consentimiento} <span className="font-semibold">{SOLICITUD.politica}</span>.{' '}
+                    {SOLICITUD.consentimiento}{' '}
+                    {/* En pestaña nueva: no se pierde lo escrito en el formulario. */}
+                    <a href="/privacy/" target="_blank" rel="noopener" className="font-semibold text-navy underline underline-offset-4">
+                      {SOLICITUD.politica}
+                    </a>
+                    .{' '}
                     <Pendiente>{SOLICITUD.consentimientoPendiente}</Pendiente>
                   </span>
                 </label>
@@ -292,7 +302,16 @@ export function Solicitud() {
                   {SOLICITUD.cta}
                 </button>
                 <p aria-live="polite" className="mt-3 text-sm text-coral-boton">
-                  {estado === 'fallo' && 'Something went wrong. Please try again in a moment.'}
+                  {/* Salida si falla el guardado o el aviso: nunca un «enviado» falso. */}
+                  {estado === 'fallo' && (
+                    <>
+                      {SOLICITUD.fallo}{' '}
+                      <a href={`https://wa.me/${MARCA.whatsappSocios}?text=${encodeURIComponent(SOLICITUD.falloWhatsappTexto)}`} target="_blank" rel="noopener" className="font-semibold text-navy underline underline-offset-4">
+                        {SOLICITUD.falloWhatsapp}
+                      </a>{' '}
+                      · <a href={`mailto:${MARCA.emailSocios}`} className="font-semibold text-navy underline underline-offset-4">{MARCA.emailSocios}</a>
+                    </>
+                  )}
                 </p>
               </div>
             </form>

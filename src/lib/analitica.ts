@@ -19,7 +19,9 @@ export function evento(nombre: string, datos: Record<string, unknown> = {}) {
   window.dataLayer.push({ event: nombre, device, language: navigator.language, ...datos })
 }
 
-/** section_view: una vez por sección con [data-capitulo] al asomar. */
+/** section_view: una vez por sección con [data-capitulo] cuando entra en el 60 % superior de la
+ *  pantalla (margen y no umbral de área: en móvil hay secciones de varias pantallas que nunca
+ *  llegaban al 35 % visible). */
 export function vigilarSecciones() {
   const secciones = document.querySelectorAll<HTMLElement>('[data-capitulo]')
   if (!('IntersectionObserver' in window)) return () => {}
@@ -33,7 +35,7 @@ export function vigilarSecciones() {
         io.unobserve(el)
       }
     },
-    { threshold: 0.35 },
+    { rootMargin: '0px 0px -40% 0px' },
   )
   secciones.forEach((s) => io.observe(s))
   return () => io.disconnect()

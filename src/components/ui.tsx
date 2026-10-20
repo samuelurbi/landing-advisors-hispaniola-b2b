@@ -3,6 +3,7 @@ import { ArrowRight } from 'lucide-react'
 import type { Texto } from '@/data/b2b'
 import { evento } from '@/lib/analitica'
 import { REVISION } from '@/lib/movimiento'
+import { medio } from '@/lib/medios'
 
 export function cx(...c: (string | false | null | undefined)[]) {
   return c.filter(Boolean).join(' ')
@@ -66,8 +67,8 @@ export function Foto({
 }) {
   return (
     <img
-      src={`/fotos/${nombre}.webp`}
-      srcSet={`/fotos/${nombre}-800.webp 800w, /fotos/${nombre}.webp 1600w`}
+      src={medio(`/fotos/${nombre}.webp`)}
+      srcSet={medio(`/fotos/${nombre}-800.webp 800w, /fotos/${nombre}.webp 1600w`)}
       sizes={sizes}
       alt={alt}
       loading={prioridad ? 'eager' : 'lazy'}

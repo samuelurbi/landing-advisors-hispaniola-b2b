@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import { NAV } from '@/data/b2b'
 import { Boton, cx } from './ui'
+import { medio } from '@/lib/medios'
 
 // Un solo elemento fijo (iteración 2: fuera la barra inferior y el índice lateral, que
 // tapaban contenido y repetían el menú).
@@ -38,7 +39,7 @@ export function Cabecera() {
     <header className="absolute inset-x-0 top-0 z-50 px-2 sm:px-3">
       <div className="mx-auto mt-2 flex max-w-contenido items-center justify-between gap-4 px-4 py-4 sm:mt-3 sm:px-10 sm:py-5">
         <a href="#top" aria-label="Hispaniola Aquatic Adventures — back to top" className="block shrink-0">
-          <img src="/marca/logotipo-blanco.webp" alt="" width={900} height={271} className="h-9 w-auto sm:h-11" />
+          <img src={medio('/marca/logotipo-blanco.webp')} alt="" width={900} height={271} className="h-9 w-auto sm:h-11" />
         </a>
         <Boton href="#apply" rastreo="header">
           Become a Partner
@@ -80,7 +81,7 @@ export function Cabecera() {
         inert={!flota}
       >
         <a href="#top" aria-label="Back to top" className="block">
-          <img src="/marca/logotipo-negro.webp" alt="" width={900} height={271} className="h-7 w-auto" />
+          <img src={medio('/marca/logotipo-negro.webp')} alt="" width={900} height={271} className="h-7 w-auto" />
         </a>
         <Boton href="#apply" rastreo="mobile_bar" className={cx('h-9 px-4 transition-opacity', !conCta && 'pointer-events-none opacity-0')} tabIndex={conCta ? 0 : -1}>
           Become a Partner

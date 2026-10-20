@@ -3,6 +3,7 @@ import { HERO, TICKET_HERO } from '@/data/b2b'
 import { Boton, Eyebrow } from './ui'
 import { Ticket } from './Ticket'
 import { evento } from '@/lib/analitica'
+import { medio } from '@/lib/medios'
 
 // Héroe en la caja redondeada de la web, con el vídeo aéreo de la piscina natural.
 // A la derecha, el pase de papel en 3D: el protagonista del héroe (la brújula se quitó
@@ -19,7 +20,7 @@ export function Hero() {
     const ahorro = (navigator as Navigator & { connection?: { saveData?: boolean } }).connection?.saveData
     if (reducido || ahorro) return
     const cargar = () => {
-      v.src = window.innerWidth < 768 ? '/video/hero-960.mp4' : '/video/hero.mp4'
+      v.src = medio(window.innerWidth < 768 ? '/video/hero-960.mp4' : '/video/hero.mp4')
       v.play().catch(() => {})
       v.addEventListener('playing', () => v.classList.remove('opacity-0'), { once: true })
     }
@@ -33,8 +34,8 @@ export function Hero() {
     <section id="top" data-capitulo="hero" className="p-2 sm:p-3">
       <div className="relative isolate flex min-h-[86svh] flex-col overflow-hidden rounded-hero bg-navy lg:min-h-[78svh]">
         <img
-          src="/fotos/hero-poster.webp"
-          srcSet="/fotos/hero-poster-800.webp 800w, /fotos/hero-poster.webp 1600w"
+          src={medio('/fotos/hero-poster.webp')}
+          srcSet={medio('/fotos/hero-poster-800.webp 800w, /fotos/hero-poster.webp 1600w')}
           sizes="100vw"
           alt="Catamarans anchored in the turquoise natural pool of Punta Cana, seen from above"
           fetchPriority="high"
